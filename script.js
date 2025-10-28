@@ -1,33 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const toggleButton = document.getElementById('darkModeToggle');
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const vibeToggle = document.getElementById('vibeToggle');
     const body = document.body;
 
-    // 1. Check for saved preference or system preference
-    const savedMode = localStorage.getItem('darkMode');
-    
+    // --- DARK MODE LOGIC ---
+
+    const savedDarkMode = localStorage.getItem('darkMode');
     // Check for system preference only if no saved preference exists
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    // Set initial mode based on saved preference, then system preference
-    if (savedMode === 'true' || (savedMode === null && prefersDark)) {
+    // Set initial dark mode state
+    const isInitialDark = savedDarkMode === 'true' || (savedDarkMode === null && prefersDark);
+    if (isInitialDark) {
         body.classList.add('dark-mode');
-        toggleButton.textContent = 'MODE: DARK 🌙';
+        darkModeToggle.textContent = 'MODE: DARK 🌙';
     }
 
-    // 2. Add event listener to the button
-    toggleButton.addEventListener('click', () => {
-        // Toggle the class on the body element
+    // Dark Mode Event Listener
+    darkModeToggle.addEventListener('click', () => {
         body.classList.toggle('dark-mode');
-
-        // Update button text and save preference
         const isDarkMode = body.classList.contains('dark-mode');
         
         if (isDarkMode) {
-            toggleButton.textContent = 'MODE: DARK 🌙';
+            darkModeToggle.textContent = 'MODE: DARK 🌙';
             localStorage.setItem('darkMode', 'true');
         } else {
-            toggleButton.textContent = 'MODE: LIGHT 💡';
+            darkModeToggle.textContent = 'MODE: LIGHT 💡';
             localStorage.setItem('darkMode', 'false');
+        }
+    });
+
+
+    // --- VIBE TOGGLE LOGIC ---
+
+    const savedVibe = localStorage.getItem('minimalVibe');
+    
+    // Set initial vibe state
+    const isInitialMinimal = savedVibe === 'true';
+    if (isInitialMinimal) {
+        body.classList.add('minimal-vibe');
+        vibeToggle.textContent = 'VIBE: MINIMAL ✨';
+    }
+
+    // Vibe Toggle Event Listener
+    vibeToggle.addEventListener('click', () => {
+        body.classList.toggle('minimal-vibe');
+
+        const isMinimalVibe = body.classList.contains('minimal-vibe');
+        
+        if (isMinimalVibe) {
+            vibeToggle.textContent = 'VIBE: MINIMAL ✨';
+            localStorage.setItem('minimalVibe', 'true');
+        } else {
+            vibeToggle.textContent = 'VIBE: BRUTAL 💥';
+            localStorage.setItem('minimalVibe', 'false');
         }
     });
 });
