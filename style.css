@@ -1,6 +1,6 @@
 /* GLOBAL RESETS & FONT */
 :root {
-    /* LIGHT MODE COLORS */
+    /* LIGHT MODE COLORS (NEUBRUTALIST DEFAULT) */
     --primary-color: #FF2B4D; /* Aggressive Pink/Red */
     --secondary-color: #00FF00; /* Bright Neon Green */
     --background-color: #FFD900; /* Intense Yellow */
@@ -13,7 +13,7 @@
     --font-mono: 'Chivo Mono', monospace;
 }
 
-/* DARK MODE OVERRIDES */
+/* DARK MODE OVERRIDES (NEUBRUTALIST DARK) */
 body.dark-mode {
     --primary-color: #00FFFF; /* Cyan */
     --secondary-color: #FF00FF; /* Magenta */
@@ -21,6 +21,31 @@ body.dark-mode {
     --text-color: #FFFFFF;
     --content-bg: #333333;
     --block-bg: #222222;
+}
+
+/* --- MINIMALIST VIBE OVERRIDES (CLASSIC LOOK) --- */
+body.minimal-vibe {
+    /* MINIMALIST COLORS */
+    --primary-color: #A0522D; /* Sienna/Brown for Classy look */
+    --secondary-color: #F0F8FF; /* Off-White/AliceBlue */
+    --background-color: #F5F5F5; /* Light Grey Background */
+    --text-color: #333333;
+    --content-bg: #FFFFFF;
+    --block-bg: #FFFFFF;
+    
+    /* VIBE CHANGES */
+    --border-size: 1px; /* Thin borders */
+    --shadow-offset: 0px; /* No shadows */
+}
+
+/* MINIMALIST DARK MODE (for when both toggles are active) */
+body.minimal-vibe.dark-mode {
+    --primary-color: #DDA0DD; /* Pale Violet Red */
+    --secondary-color: #1A1A1A; 
+    --background-color: #121212; /* Deep dark background */
+    --text-color: #E0E0E0;
+    --content-bg: #1E1E1E;
+    --block-bg: #1E1E1E;
 }
 
 * {
@@ -46,7 +71,13 @@ body {
     border: var(--border-size) solid var(--text-color);
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--text-color);
     padding: 20px;
-    transition: background-color 0.3s;
+    transition: all 0.3s; /* Smoother transition for vibe changes */
+}
+
+/* Minimalist changes to container */
+body.minimal-vibe .page-container {
+    box-shadow: none;
+    border: var(--border-size) solid var(--text-color);
 }
 
 .content-grid {
@@ -56,19 +87,32 @@ body {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-/* BASE STYLING FOR CONTENT BLOCKS (NEUBRUTALISM) */
+/* BASE STYLING FOR CONTENT BLOCKS (NEUBRUTALISM DEFAULT) */
 .content-block {
     padding: 20px;
     border: var(--border-size) solid var(--text-color);
     background-color: var(--block-bg);
-    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--primary-color);
-    transition: transform 0.1s, box-shadow 0.1s, background-color 0.3s;
+    /* Use primary color for the shadow by default */
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--primary-color); 
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
 }
 
 .content-block:hover {
     transform: translate(-2px, -2px);
     box-shadow: calc(var(--shadow-offset) + 2px) calc(var(--shadow-offset) + 2px) 0 0 var(--primary-color);
 }
+
+/* Minimalist changes to blocks */
+body.minimal-vibe .content-block {
+    box-shadow: none; /* Remove shadow */
+    transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+
+body.minimal-vibe .content-block:hover {
+    transform: none; /* Remove translation on hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional subtle shadow instead */
+}
+
 
 h1, h2, h3 {
     text-transform: uppercase;
@@ -81,7 +125,12 @@ h3 {
     font-size: 1.5rem;
     color: var(--primary-color);
     padding-bottom: 5px;
+    /* Use a solid border in minimal mode */
     border-bottom: 3px dashed var(--text-color); 
+}
+
+body.minimal-vibe h3 {
+    border-bottom: 1px solid var(--text-color);
 }
 
 p {
@@ -99,13 +148,18 @@ p {
     margin-bottom: 20px;
 }
 
+/* New wrapper for buttons */
+.header-toggles {
+    display: flex;
+    gap: 10px;
+    margin-left: auto; /* Pushes the group to the far right on desktop */
+    order: 1; 
+}
+
 /* Button positioning - MODIFIED */
-.dark-mode-toggle {
-    margin-left: auto; /* Pushes the button to the far right on desktop */
-    order: 1; /* Puts the button on the right edge */
+.dark-mode-toggle, .vibe-toggle {
     font-size: 0.8rem;
     padding: 5px 10px;
-    /* Removed: position: absolute, top, right, margin */
 }
 
 .glitch-text {
@@ -115,9 +169,16 @@ p {
         var(--border-size) var(--border-size) 0 var(--secondary-color),
         calc(var(--border-size) * -1) calc(var(--border-size) * -1) 0 var(--text-color);
     margin-bottom: 0;
-    order: 2; /* Positions the H1 below the button */
+    order: 2; /* Positions the H1 below the button group */
     width: 100%; /* Ensures it takes full width for wrapping */
     text-align: center; /* Center text on desktop */
+}
+
+/* Remove glitch effect in minimal mode */
+body.minimal-vibe .glitch-text {
+    text-shadow: none;
+    text-align: left;
+    font-size: 3rem; /* Reduce size slightly for classier look */
 }
 
 .glitch-subtext {
@@ -130,6 +191,11 @@ p {
     width: 100%;
     text-align: center;
 }
+
+body.minimal-vibe .glitch-subtext {
+    text-align: left;
+}
+
 
 /* NAVIGATION (Old School Menu Bar) */
 .navigation {
@@ -150,13 +216,28 @@ p {
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
-    transition: background-color 0.1s;
+    transition: background-color 0.1s, color 0.1s;
 }
 
 .nav-link:hover {
     background-color: var(--primary-color);
     color: var(--content-bg);
 }
+
+/* Minimalist navigation changes */
+body.minimal-vibe .navigation {
+    justify-content: flex-start;
+}
+body.minimal-vibe .nav-link {
+    background-color: transparent;
+    border: 1px solid var(--text-color);
+    padding: 5px 10px;
+}
+body.minimal-vibe .nav-link:hover {
+    background-color: var(--primary-color);
+    color: var(--content-bg);
+}
+
 
 /* BUTTONS / LINKS (INTERACTIVE ELEMENTS) */
 a {
@@ -185,6 +266,20 @@ a {
     box-shadow: 1px 1px 0 0 var(--text-color);
 }
 
+/* Minimalist button changes */
+body.minimal-vibe .button-link {
+    box-shadow: none;
+    border: 1px solid var(--text-color);
+    transform: none;
+    background-color: var(--primary-color);
+}
+
+body.minimal-vibe .button-link:hover {
+    transform: none; 
+    box-shadow: none;
+    opacity: 0.8;
+}
+
 .secondary-button {
     background-color: var(--content-bg);
     color: var(--text-color);
@@ -199,6 +294,13 @@ a {
     background-color: var(--secondary-color); /* Highlight color */
     box-shadow: var(--shadow-offset) var(--shadow-offset) 0 0 var(--text-color);
 }
+
+/* Remove special styling in minimal mode */
+body.minimal-vibe .featured-project {
+    background-color: var(--block-bg);
+    box-shadow: none;
+}
+
 
 .about-me {
     grid-column: 1 / -1; 
@@ -272,6 +374,10 @@ body.dark-mode .footer-block p {
     color: #AAAAAA;
 }
 
+body.minimal-vibe .footer-block {
+    border-top: 1px solid var(--text-color);
+}
+
 .footer-block p {
     margin-bottom: 5px;
 }
@@ -282,8 +388,9 @@ body.dark-mode .footer-block p {
     line-height: 1;
 }
 
+/* CONDITIONAL PAGE STRIP (WARNING STRIP) */
 .page-container::before {
-    content: "WARNING: LOT OF COLORS";
+    content: "WARNING: LOT OF COLORS"; /* Default Brutalist Text */
     display: block;
     text-align: center;
     font-size: 0.8rem;
@@ -294,7 +401,16 @@ body.dark-mode .footer-block p {
     margin: -20px -20px 20px -20px; 
     text-transform: uppercase;
     font-weight: 700;
+    transition: all 0.3s; /* Add smooth transition */
 }
+
+body.minimal-vibe .page-container::before {
+    content: "MINIMALIST MODE ACTIVE"; /* Minimalist Text */
+    color: var(--text-color);
+    background-color: var(--content-bg);
+    border-bottom: 1px solid var(--text-color);
+}
+
 
 /* SCROLLBAR STYLE (Updated to use variables) */
 ::-webkit-scrollbar {
@@ -328,11 +444,13 @@ body.dark-mode .footer-block p {
         padding-top: 10px;
     }
 
-    /* Move the button to the top right and align it there */
-    .dark-mode-toggle {
-        order: -1; /* Pushes the button to the very top */
-        margin: 0 0 10px 0; /* Add bottom margin for separation */
-        align-self: flex-end; /* Aligns the button to the right, even when the container is column */
+    /* Handle both toggle buttons on mobile */
+    .header-toggles {
+        order: -1; 
+        align-self: flex-end; /* Aligns the entire group to the right */
+        display: flex; /* Makes buttons stay side-by-side */
+        gap: 10px;
+        margin-bottom: 10px;
     }
 
     .glitch-text, .glitch-subtext {
